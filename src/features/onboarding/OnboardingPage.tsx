@@ -68,12 +68,6 @@ export function OnboardingPage() {
     </button>
   )
 
-  const illBox = (accent: string, label: string) => (
-    <div style={{ width: '100%', aspectRatio: '1/1', borderRadius: 24, background: `repeating-linear-gradient(45deg,${accent} 0 11px,transparent 11px 22px)`, border: '1px dashed rgba(255,255,255,.22)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 1, color: 'rgba(255,255,255,.5)', textTransform: 'uppercase', textAlign: 'center', lineHeight: 1.6 }}>{label}</div>
-    </div>
-  )
-
   const inputStyle: React.CSSProperties = {
     width: '100%', background: 'transparent', border: 'none',
     borderBottom: '1.4px solid rgba(255,255,255,.25)', color: '#fff',
