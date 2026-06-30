@@ -1,9 +1,20 @@
+import { useEffect, useState } from 'react'
 import { useLayoutCtx } from '@/app/LayoutContext'
 import { useAuthStore } from '@/store/authStore'
+import { theoryRepo, examRepo } from '@/db/repositories'
 
 export function ProfilePage() {
   const { openMenu, goToFill } = useLayoutCtx()
   const user = useAuthStore(s => s.user)!
+  const [passedTickets, setPassedTickets] = useState(0)
+  const [completedModules, setCompletedModules] = useState(0)
+  const [totalModules, setTotalModules] = useState(6)
+
+  useEffect(() => {
+    examRepo.getPassedTickets(user.id).then(setPassedTickets)
+    theoryRepo.getModules().then(mods => setTotalModules(mods.length))
+    theoryRepo.getProgress(user.id).then(prog => setCompletedModules(prog.filter(p => p.done).length))
+  }, [user.id])
 
   return (
     <div className="noscroll" style={{ position: 'absolute', inset: 0, background: '#FF49C0', color: '#0B0B0B', overflowY: 'auto', padding: '62px 24px 40px' }}>
@@ -21,8 +32,15 @@ export function ProfilePage() {
       </div>
       <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(11,11,11,.55)', marginBottom: 12 }}>Мой прогресс</div>
       <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
-        {[[`${user.driving_hours}/56`, 'часов вождения'], ['28/40', 'билетов решено'], ['4/6', 'модулей']].map(([v, l]) => (
-          <div key={l} style={{ flex: 1, borderRadius: 18, background: 'rgba(11,11,11,.1)', padding: 16 }}><div style={{ fontSize: 26, fontWeight: 700 }}>{v}</div><div style={{ fontSize: 11, color: 'rgba(11,11,11,.6)', marginTop: 4 }}>{l}</div></div>
+        {[
+          [`${user.driving_hours}/56`, 'часов вождения'],
+          [`${passedTickets}/40`, 'билетов сдано'],
+          [`${completedModules}/${totalModules}`, 'модулей']
+        ].map(([v, l]) => (
+          <div key={l} style={{ flex: 1, borderRadius: 18, background: 'rgba(11,11,11,.1)', padding: 16 }}>
+            <div style={{ fontSize: 26, fontWeight: 700 }}>{v}</div>
+            <div style={{ fontSize: 11, color: 'rgba(11,11,11,.6)', marginTop: 4 }}>{l}</div>
+          </div>
         ))}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 20, overflow: 'hidden', background: 'rgba(11,11,11,.06)' }}>

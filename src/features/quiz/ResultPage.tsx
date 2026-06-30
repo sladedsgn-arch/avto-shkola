@@ -37,8 +37,10 @@ export function ResultPage() {
         ))}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 18 }}>
-        <button style={{ width: '100%', height: 56, borderRadius: 999, border: 'none', background: '#EDE9DC', color: '#0B0B0B', fontFamily: "'Geist',sans-serif", fontSize: 16, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>Поделиться</button>
-        <button onClick={e => goToFill('/tickets', e)} style={{ width: '100%', height: 56, borderRadius: 999, border: '1.4px solid rgba(255,255,255,.6)', background: 'transparent', color: '#fff', fontFamily: "'Geist',sans-serif", fontSize: 16, fontWeight: 600, cursor: 'pointer' }}>Работа над ошибками</button>
+        <button onClick={() => {
+          if (navigator.share) navigator.share({ title: 'Экзамен ГИБДД', text: `Результат: ${score}/${total} — ${passed ? 'СДАНО' : 'НЕ СДАНО'}` }).catch(() => {})
+        }} style={{ width: '100%', height: 56, borderRadius: 999, border: 'none', background: '#EDE9DC', color: '#0B0B0B', fontFamily: "'Geist',sans-serif", fontSize: 16, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>Поделиться</button>
+        <button onClick={e => goToFill('/quiz/errors', e)} style={{ width: '100%', height: 56, borderRadius: 999, border: '1.4px solid rgba(255,255,255,.6)', background: 'transparent', color: '#fff', fontFamily: "'Geist',sans-serif", fontSize: 16, fontWeight: 600, cursor: 'pointer' }}>Работа над ошибками</button>
       </div>
     </div>
   )

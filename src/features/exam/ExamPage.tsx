@@ -20,7 +20,7 @@ export function ExamPage() {
           <div key={l} style={{ background: '#FF3A2D', padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}><span style={{ fontSize: 16, fontWeight: 500 }}>{l}</span><span style={{ fontSize: 20, fontWeight: 600 }}>{v}</span></div>
         ))}
       </div>
-      <button onClick={e => goToFill('/result/0', e)} style={{ width: '100%', height: 62, borderRadius: 999, border: 'none', background: '#EDE9DC', color: '#0B0B0B', fontFamily: "'Geist',sans-serif", fontSize: 18, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+      <button onClick={e => goToFill('/quiz/exam', e)} style={{ width: '100%', height: 62, borderRadius: 999, border: 'none', background: '#EDE9DC', color: '#0B0B0B', fontFamily: "'Geist',sans-serif", fontSize: 18, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
         Начать экзамен
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </button>
