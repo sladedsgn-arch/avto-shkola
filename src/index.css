@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body, #root {
+  margin: 0; padding: 0;
+  width: 100%; min-height: 100%;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #E4E0D2;
+  color: #fff;
+  overscroll-behavior: none;
+}
+
+.noscroll::-webkit-scrollbar { display: none; }
+.noscroll { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* ===== Device frame (как в макете) ===== */
+.device-stage {
+  min-height: 100vh; width: 100%;
+  background: #E4E0D2;
+  display: flex; align-items: center; justify-content: center;
+  padding: 36px 20px;
+}
+.device-frame {
+  width: 414px; padding: 12px;
+  background: #0B0B0B; border-radius: 56px;
+  box-shadow: 0 40px 90px -30px rgba(0,0,0,.55);
+}
+.device-screen {
+  position: relative;
+  width: 390px; height: 844px;
+  border-radius: 44px; overflow: hidden;
+  background: #000;
+}
+
+/* На реальном мобильном/узком экране — полноэкранный PWA без рамки */
+@media (max-width: 460px) {
+  .device-stage { padding: 0; background: #000; }
+  .device-frame { width: 100%; padding: 0; border-radius: 0; box-shadow: none; }
+  .device-screen { width: 100%; height: 100vh; height: 100dvh; border-radius: 0; }
+}
+
+@keyframes riseUp { from { transform: translateY(46px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes riseUpSm { from { transform: translateY(22px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes menuDrop { from { transform: translateY(-101%); } to { transform: translateY(0); } }
+@keyframes menuItemIn { from { transform: translateY(28px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes popIn { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes twinkle { 0%,100% { transform: scale(.7) rotate(0deg); opacity:.5; } 50% { transform: scale(1.15) rotate(20deg); opacity:1; } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.5; } }
+
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+input { font-family: inherit; }
+a { text-decoration: none; color: inherit; }

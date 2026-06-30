@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\MOBILE APP CAR SCHOOL\\\\Design mockups and prompt.zip\"\\); $zip.Entries | Select-Object FullName | Format-Table -AutoSize; $zip.Dispose\\(\\))",
+      "PowerShell(Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(\"D:\\\\MOBILE APP CAR SCHOOL\\\\Design mockups and prompt.zip\"\\); $entry = $zip.GetEntry\\(\"Автошкола.dc.html\"\\); $stream = $entry.Open\\(\\); $reader = New-Object System.IO.StreamReader\\($stream\\); $content = $reader.ReadToEnd\\(\\); $reader.Close\\(\\); $zip.Dispose\\(\\); $content.Length; $content.Substring\\(0, 3000\\))",
+      "Bash(npm create *)"
+    ]
+  }
+}

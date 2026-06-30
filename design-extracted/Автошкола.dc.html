@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  .noscroll::-webkit-scrollbar { display: none; }
+  .noscroll { scrollbar-width: none; -ms-overflow-style: none; }
+  @keyframes riseUp { from { transform: translateY(46px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes riseUpSm { from { transform: translateY(22px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes menuDrop { from { transform: translateY(-101%); } to { transform: translateY(0); } }
+  @keyframes menuItemIn { from { transform: translateY(28px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes popIn { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes twinkle { 0%,100% { transform: scale(.7) rotate(0deg); opacity:.5; } 50% { transform: scale(1.15) rotate(20deg); opacity:1; } }
+</style>
+</helmet>
+
+<div style="min-height:100vh;width:100%;background:#E4E0D2;display:flex;align-items:center;justify-content:center;padding:36px 20px;font-family:'Geist',sans-serif;">
+
+  <div style="position:relative;{{ frameShell }}">
+    <!-- SCREEN VIEWPORT -->
+    <div ref="{{ setScreenRef }}" style="position:relative;width:390px;height:844px;border-radius:{{ screenRadius }};overflow:hidden;background:#000;">
+
+      <!-- ===== STATUS BAR ===== -->
+      <sc-if value="{{ showStatus }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;top:0;left:0;right:0;height:50px;z-index:60;display:flex;align-items:flex-end;justify-content:space-between;padding:0 28px 8px;pointer-events:none;color:{{ statusFg }};font-weight:600;font-size:15px;letter-spacing:.2px;">
+        <span>9:41</span>
+        <span style="display:flex;align-items:center;gap:7px;">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="7" rx="1"/><rect x="10" y="1.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1" opacity=".35"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2 0 3.8.8 5.1 2l1.3-1.4A9.4 9.4 0 0 0 8.5.4 9.4 9.4 0 0 0 2 3l1.4 1.4A7.4 7.4 0 0 1 8.5 2.4Z"/><path d="M8.5 6c1 0 1.9.4 2.6 1l1.3-1.4A6 6 0 0 0 8.5 4 6 6 0 0 0 4.6 5.6L6 7a3.7 3.7 0 0 1 2.5-1Z"/><circle cx="8.5" cy="9.6" r="1.8"/></svg>
+          <span style="display:inline-flex;align-items:center;gap:2px;"><span style="width:22px;height:11px;border:1.4px solid currentColor;border-radius:3px;display:inline-block;position:relative;"><span style="position:absolute;inset:1.5px;width:14px;background:currentColor;border-radius:1px;"></span></span><span style="width:1.6px;height:4px;background:currentColor;border-radius:1px;"></span></span>
+        </span>
+      </div>
+      </sc-if>
+
+      <!-- ================= ONBOARDING 1 ================= -->
+      <sc-if value="{{ isOb1 }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#000;color:#fff;display:flex;flex-direction:column;padding:64px 24px 30px;">
+        <div style="display:flex;justify-content:flex-end;font-size:15px;font-weight:500;color:#fff;letter-spacing:-.3px;">.auto</div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div style="width:100%;aspect-ratio:1/1;border-radius:24px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 11px,transparent 11px 22px);border:1px dashed rgba(255,255,255,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.5);text-transform:uppercase;text-align:center;line-height:1.6;">илл. — открытая книга<br>+ дорожный знак</div>
+          </div>
+        </div>
+        <div style="animation:riseUp .6s cubic-bezier(.2,.7,.2,1) both;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:14px;">01 — 03</div>
+          <h1 style="font-size:44px;line-height:.98;font-weight:600;letter-spacing:-1.2px;margin:0;">Вся теория ПДД в кармане</h1>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:34px;">
+          <div style="display:flex;gap:8px;">{{ dots1 }}</div>
+          <button onClick="{{ toOb2 }}" style="width:60px;height:60px;border-radius:999px;border:1.4px solid rgba(255,255,255,.85);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#fff;color:#000;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= ONBOARDING 2 ================= -->
+      <sc-if value="{{ isOb2 }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#000;color:#fff;display:flex;flex-direction:column;padding:64px 24px 30px;">
+        <div style="display:flex;justify-content:flex-end;font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div style="width:100%;aspect-ratio:1/1;border-radius:24px;background:repeating-linear-gradient(45deg,rgba(31,43,255,.18) 0 11px,transparent 11px 22px);border:1px dashed rgba(255,255,255,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.5);text-transform:uppercase;text-align:center;line-height:1.6;">илл. — чек-лист<br>+ секундомер</div>
+          </div>
+        </div>
+        <div style="animation:riseUp .6s cubic-bezier(.2,.7,.2,1) both;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:14px;">02 — 03</div>
+          <h1 style="font-size:44px;line-height:.98;font-weight:600;letter-spacing:-1.2px;margin:0;">Билеты и пробный экзамен ГИБДД</h1>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:34px;">
+          <div style="display:flex;gap:8px;">{{ dots2 }}</div>
+          <button onClick="{{ toOb3 }}" style="width:60px;height:60px;border-radius:999px;border:1.4px solid rgba(255,255,255,.85);background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#fff;color:#000;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= ONBOARDING 3 ================= -->
+      <sc-if value="{{ isOb3 }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#000;color:#fff;display:flex;flex-direction:column;padding:64px 24px 30px;">
+        <div style="display:flex;justify-content:flex-end;font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div style="width:100%;aspect-ratio:1/1;border-radius:24px;background:repeating-linear-gradient(45deg,rgba(244,212,0,.18) 0 11px,transparent 11px 22px);border:1px dashed rgba(255,255,255,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(255,255,255,.5);text-transform:uppercase;text-align:center;line-height:1.6;">илл. — машина<br>+ календарь</div>
+          </div>
+        </div>
+        <div style="animation:riseUp .6s cubic-bezier(.2,.7,.2,1) both;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:14px;">03 — 03</div>
+          <h1 style="font-size:44px;line-height:.98;font-weight:600;letter-spacing:-1.2px;margin:0;">Расписание и прогресс в одном месте</h1>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:34px;gap:16px;">
+          <div style="display:flex;gap:8px;">{{ dots3 }}</div>
+          <button onClick="{{ toForm }}" style="flex:1;height:60px;border-radius:999px;border:none;background:#EDE9DC;color:#0B0B0B;font-family:'Geist',sans-serif;font-size:17px;font-weight:600;letter-spacing:-.2px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;" style-hover="background:#fff;">
+            Начать
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= FORM ================= -->
+      <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#000;color:#fff;overflow-y:auto;padding:62px 24px 36px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:36px;">
+          <button onClick="{{ toOb3 }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:14px;">Шаг 1</div>
+          <h1 style="font-size:42px;line-height:.98;font-weight:600;letter-spacing:-1.2px;margin:0 0 36px;">Создайте<br>профиль</h1>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:26px;animation:fadeIn .6s .15s both;">
+          <label style="display:block;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;">Имя и фамилия</div>
+            <input value="Овчаренко А.К." style="width:100%;background:transparent;border:none;border-bottom:1.4px solid rgba(255,255,255,.25);color:#fff;font-family:'Geist',sans-serif;font-size:24px;font-weight:500;padding:0 0 10px;outline:none;" />
+          </label>
+          <label style="display:block;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px;">Телефон — это логин</div>
+            <input value="+7 900 123-45-67" style="width:100%;background:transparent;border:none;border-bottom:1.4px solid rgba(255,255,255,.25);color:#fff;font-family:'Geist',sans-serif;font-size:24px;font-weight:500;padding:0 0 10px;outline:none;" />
+          </label>
+          <div>
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px;">Категория</div>
+            <div style="display:flex;gap:10px;">
+              <div style="flex:1;height:54px;border-radius:999px;background:#EDE9DC;color:#000;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;">B</div>
+              <div style="flex:1;height:54px;border-radius:999px;border:1.4px solid rgba(255,255,255,.25);color:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;">A</div>
+              <div style="flex:1;height:54px;border-radius:999px;border:1.4px solid rgba(255,255,255,.25);color:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;">C</div>
+              <div style="flex:1;height:54px;border-radius:999px;border:1.4px solid rgba(255,255,255,.25);color:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;">D</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:14px;">Коробка передач</div>
+            <div style="display:flex;gap:10px;">
+              <div onClick="{{ setMkpp }}" style="flex:1;height:54px;border-radius:999px;background:{{ mkppBg }};color:{{ mkppFg }};border:1.4px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;">МКПП</div>
+              <div onClick="{{ setAkpp }}" style="flex:1;height:54px;border-radius:999px;background:{{ akppBg }};color:{{ akppFg }};border:1.4px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;">АКПП</div>
+            </div>
+          </div>
+        </div>
+        <button onClick="{{ enterApp }}" style="width:100%;height:60px;margin-top:40px;border-radius:999px;border:none;background:#EDE9DC;color:#0B0B0B;font-family:'Geist',sans-serif;font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;" style-hover="background:#fff;">
+          Войти в приложение
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      </sc-if>
+
+      <!-- ================= HOME / DASHBOARD ================= -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#000;color:#fff;overflow-y:auto;">
+        <div style="padding:62px 24px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;">
+            <button onClick="{{ openMenu }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;">
+              <svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg>
+            </button>
+            <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+          </div>
+          <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;">
+            <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:1px;color:rgba(255,255,255,.5);text-transform:uppercase;margin-bottom:8px;">Привет, Овчаренко А.К.</div>
+            <h1 style="font-size:52px;line-height:.92;font-weight:600;letter-spacing:-1.6px;margin:0;">Сегодня</h1>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:22px;">
+            <div style="height:42px;padding:0 16px;border-radius:999px;background:#171717;color:#fff;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;">Эта неделя
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div style="width:42px;height:42px;border-radius:999px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+            </div>
+            <div style="margin-left:auto;color:rgba(255,255,255,.6);font-size:22px;letter-spacing:1px;">⋮</div>
+          </div>
+        </div>
+
+        <!-- readiness ring -->
+        <div style="padding:14px 24px 8px;display:flex;align-items:center;gap:20px;">
+          <div style="position:relative;width:128px;height:128px;flex-shrink:0;">
+            <svg width="128" height="128" viewBox="0 0 180 180" style="transform:rotate(-90deg);">
+              <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="11"/>
+              <circle cx="90" cy="90" r="80" fill="none" stroke="#EDE9DC" stroke-width="11" stroke-linecap="round" stroke-dasharray="502" stroke-dashoffset="140"/>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+              <span style="font-size:34px;font-weight:600;letter-spacing:-1px;">72%</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:20px;font-weight:600;letter-spacing:-.4px;line-height:1.1;">Готовность<br>к экзамену</div>
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.5);margin-top:10px;text-transform:uppercase;">осталось 8 модулей</div>
+          </div>
+        </div>
+
+        <!-- lesson cards -->
+        <div class="noscroll" style="display:flex;gap:14px;overflow-x:auto;padding:18px 24px 8px;scroll-snap-type:x mandatory;">
+          <div style="flex:0 0 210px;height:230px;border-radius:22px;background:#93A8C7;color:#0B0B0B;padding:22px;display:flex;flex-direction:column;scroll-snap-align:start;">
+            <div style="font-size:13px;font-weight:600;">Игорь Семёнов</div>
+            <div style="font-size:11px;color:rgba(11,11,11,.55);font-family:'Geist Mono',monospace;letter-spacing:.5px;margin-top:3px;">ИНСТРУКТОР · ВОЖДЕНИЕ</div>
+            <div style="flex:1;display:flex;align-items:flex-end;"><div style="font-size:30px;font-weight:600;line-height:.98;letter-spacing:-.8px;">Город:<br>левые<br>повороты</div></div>
+            <div style="font-size:13px;font-weight:500;margin-top:14px;">10:00 — 11:30</div>
+          </div>
+          <div style="flex:0 0 210px;height:230px;border-radius:22px;background:#EDE9DC;color:#0B0B0B;padding:22px;display:flex;flex-direction:column;scroll-snap-align:start;">
+            <div style="font-size:13px;font-weight:600;">Марина Лебедева</div>
+            <div style="font-size:11px;color:rgba(11,11,11,.55);font-family:'Geist Mono',monospace;letter-spacing:.5px;margin-top:3px;">ИНСТРУКТОР · ПЛОЩАДКА</div>
+            <div style="flex:1;display:flex;align-items:flex-end;"><div style="font-size:30px;font-weight:600;line-height:.98;letter-spacing:-.8px;">Парковка<br>задним<br>ходом</div></div>
+            <div style="font-size:13px;font-weight:500;margin-top:14px;">14:45 — 16:15</div>
+          </div>
+        </div>
+
+        <!-- day strip -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:18px;padding:14px 24px;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin:14px 0;color:rgba(255,255,255,.55);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg>
+          <span style="color:#fff;font-weight:600;font-size:15px;">Пн 30</span>
+          <span style="font-size:15px;">Вт 1</span>
+          <span style="font-size:15px;">Ср 2</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+
+        <!-- continue + streak -->
+        <div style="padding:6px 24px 40px;display:flex;flex-direction:column;gap:14px;">
+          <div onClick="{{ openModule }}" style="border-radius:22px;background:#171717;padding:22px;cursor:pointer;" style-hover="background:#1f1f1f;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);">Продолжить</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;">
+              <div style="font-size:21px;font-weight:600;letter-spacing:-.4px;">Дорожные знаки</div>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+            </div>
+            <div style="font-size:13px;color:rgba(255,255,255,.55);margin-top:4px;">Урок 4 из 9 · теория</div>
+            <div style="height:5px;border-radius:999px;background:rgba(255,255,255,.14);margin-top:16px;overflow:hidden;"><div style="height:100%;width:44%;background:#EDE9DC;border-radius:999px;"></div></div>
+          </div>
+          <div style="border-radius:22px;background:#171717;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:21px;font-weight:600;letter-spacing:-.4px;">7 дней подряд</div>
+              <div style="font-size:13px;color:rgba(255,255,255,.55);margin-top:2px;">так держать — не теряй стрик</div>
+            </div>
+            <div style="font-size:30px;">🔥</div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= THEORY (blue) ================= -->
+      <sc-if value="{{ isTheory }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#1F2BFF;color:#fff;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:26px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:10px;">Раздел</div>
+          <h1 style="font-size:52px;line-height:.92;font-weight:600;letter-spacing:-1.6px;margin:0;">Теория</h1>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <sc-for list="{{ modules }}" as="m" hint-placeholder-count="4">
+            <div onClick="{{ m.onClick }}" style="border-radius:20px;background:rgba(255,255,255,.1);padding:20px;cursor:pointer;animation:riseUpSm .5s both;" style-hover="background:rgba(255,255,255,.16);">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+                <div style="font-size:22px;font-weight:600;letter-spacing:-.5px;max-width:78%;line-height:1.05;">{{ m.title }}</div>
+                <div style="font-family:'Geist Mono',monospace;font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;">{{ m.tag }}</div>
+              </div>
+              <div style="font-size:13px;color:rgba(255,255,255,.65);margin-top:8px;">{{ m.meta }}</div>
+              <div style="height:5px;border-radius:999px;background:rgba(255,255,255,.18);margin-top:16px;overflow:hidden;"><div style="height:100%;background:#fff;border-radius:999px;width:{{ m.pct }};"></div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= THEORY MODULE ================= -->
+      <sc-if value="{{ isModule }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#1F2BFF;color:#fff;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <button onClick="{{ backToTheory }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;">
+          <h1 style="font-size:40px;line-height:.95;font-weight:600;letter-spacing:-1.2px;margin:0 0 20px;">Проезд<br>перекрёстков</h1>
+          <button style="height:48px;padding:0 26px;border-radius:999px;border:none;background:#EDE9DC;color:#0B0B0B;font-family:'Geist',sans-serif;font-size:15px;font-weight:600;cursor:pointer;">Начать модуль</button>
+        </div>
+        <div style="display:flex;gap:26px;margin:30px 0 4px;border-bottom:1px solid rgba(255,255,255,.18);">
+          <div onClick="{{ setTabPreview }}" style="padding-bottom:12px;font-size:16px;font-weight:600;cursor:pointer;color:{{ tabPrevCol }};border-bottom:2px solid {{ tabPrevBd }};margin-bottom:-1px;">Превью</div>
+          <div onClick="{{ setTabDetails }}" style="padding-bottom:12px;font-size:16px;font-weight:500;cursor:pointer;color:{{ tabDetCol }};border-bottom:2px solid {{ tabDetBd }};margin-bottom:-1px;">Детали</div>
+        </div>
+        <div style="margin-top:22px;display:flex;flex-direction:column;">
+          <div style="display:flex;gap:16px;padding:4px 0 22px;border-bottom:1px solid rgba(255,255,255,.12);">
+            <div style="font-family:'Geist Mono',monospace;font-size:13px;color:rgba(255,255,255,.6);padding-top:2px;">01</div>
+            <div style="flex:1;">
+              <div style="font-size:17px;font-weight:600;">Виды перекрёстков</div>
+              <div style="font-size:13px;color:rgba(255,255,255,.65);margin-top:5px;line-height:1.4;">Регулируемые и нерегулируемые, равнозначные и неравнозначные.</div>
+              <div style="margin-top:14px;height:150px;border-radius:16px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 11px,transparent 11px 22px);border:1px dashed rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;position:relative;">
+                <div style="width:52px;height:52px;border-radius:999px;background:#fff;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#1F2BFF"><path d="M8 5v14l11-7z"/></svg></div>
+                <div style="position:absolute;bottom:10px;left:12px;font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.55);text-transform:uppercase;">видео 4:20</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12);">
+            <div style="font-family:'Geist Mono',monospace;font-size:13px;color:rgba(255,255,255,.6);">02</div>
+            <div style="flex:1;"><div style="font-size:17px;font-weight:600;">Очерёдность проезда</div><div style="font-size:13px;color:rgba(255,255,255,.65);margin-top:5px;">Правило правой руки и приоритет.</div></div>
+          </div>
+          <div style="display:flex;gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.12);">
+            <div style="font-family:'Geist Mono',monospace;font-size:13px;color:rgba(255,255,255,.6);">03</div>
+            <div style="flex:1;"><div style="font-size:17px;font-weight:600;">Светофор и регулировщик</div><div style="font-size:13px;color:rgba(255,255,255,.65);margin-top:5px;">Сигналы и их приоритет над знаками.</div></div>
+          </div>
+          <div style="display:flex;gap:16px;padding:18px 0;">
+            <div style="font-family:'Geist Mono',monospace;font-size:13px;color:rgba(255,255,255,.6);">04</div>
+            <div style="flex:1;"><div style="font-size:17px;font-weight:600;">Круговое движение</div><div style="font-size:13px;color:rgba(255,255,255,.65);margin-top:5px;">Въезд, перестроение и выезд.</div></div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= TICKETS (lime) ================= -->
+      <sc-if value="{{ isTickets }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#B4F000;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:22px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(11,11,11,.55);margin-bottom:10px;">Тренировка</div>
+          <h1 style="font-size:52px;line-height:.92;font-weight:600;letter-spacing:-1.6px;margin:0;">Билеты</h1>
+        </div>
+        <div style="height:52px;border-radius:999px;background:rgba(11,11,11,.08);display:flex;align-items:center;gap:10px;padding:0 20px;margin-bottom:22px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B0B0B" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <span style="color:rgba(11,11,11,.5);font-size:15px;">Поиск билета</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+          <div onClick="{{ startQuiz }}" style="height:64px;border-radius:18px;background:#0B0B0B;color:#B4F000;display:flex;align-items:center;justify-content:space-between;padding:0 22px;cursor:pointer;"><span style="font-size:18px;font-weight:600;">Билеты 1 — 40</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div onClick="{{ goExam }}" style="height:64px;border-radius:18px;background:#0B0B0B;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;cursor:pointer;"><span style="font-size:18px;font-weight:600;">Экзамен ГИБДД</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF3A2D" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+          <div style="display:flex;gap:10px;">
+            <div onClick="{{ startQuiz }}" style="flex:1;height:64px;border-radius:18px;border:1.4px solid rgba(11,11,11,.3);display:flex;align-items:center;padding:0 18px;font-size:16px;font-weight:600;cursor:pointer;">Марафон</div>
+            <div onClick="{{ startQuiz }}" style="flex:1;height:64px;border-radius:18px;border:1.4px solid rgba(11,11,11,.3);display:flex;align-items:center;padding:0 18px;font-size:16px;font-weight:600;cursor:pointer;">Случайные</div>
+          </div>
+          <div onClick="{{ startQuiz }}" style="height:64px;border-radius:18px;border:1.4px solid rgba(11,11,11,.3);display:flex;align-items:center;justify-content:space-between;padding:0 22px;cursor:pointer;"><span style="font-size:16px;font-weight:600;">Работа над ошибками</span><span style="font-family:'Geist Mono',monospace;font-size:12px;color:rgba(11,11,11,.55);">6 ВОПР.</span></div>
+        </div>
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(11,11,11,.55);margin-bottom:14px;">Все 40 билетов</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">
+          <sc-for list="{{ tickets }}" as="t" hint-placeholder-count="40">
+            <div onClick="{{ t.onClick }}" style="aspect-ratio:1/1;border-radius:14px;background:{{ t.bg }};color:{{ t.fg }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;border:{{ t.border }};">{{ t.n }}</div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= QUIZ (lime) ================= -->
+      <sc-if value="{{ isQuiz }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#B4F000;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <button onClick="{{ backToTickets }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span style="font-family:'Geist Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.5px;">ВОПРОС {{ qNum }} / 20</span>
+          <span style="width:26px;"></span>
+        </div>
+        <div style="height:5px;border-radius:999px;background:rgba(11,11,11,.15);overflow:hidden;margin-bottom:26px;"><div style="height:100%;background:#0B0B0B;border-radius:999px;width:{{ qPct }};transition:width .4s;"></div></div>
+        <div style="height:170px;border-radius:18px;background:rgba(11,11,11,.06);border:1px dashed rgba(11,11,11,.3);display:flex;align-items:center;justify-content:center;margin-bottom:22px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(11,11,11,.5);">илл. вопроса — дорожная ситуация</span>
+        </div>
+        <h2 style="font-size:23px;line-height:1.12;font-weight:600;letter-spacing:-.5px;margin:0 0 22px;">{{ qText }}</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ qOptions }}" as="o" hint-placeholder-count="3">
+            <div onClick="{{ o.onClick }}" style="border-radius:16px;padding:18px 20px;background:{{ o.bg }};color:{{ o.fg }};border:1.6px solid {{ o.bd }};cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:15px;font-weight:500;line-height:1.3;">
+              <span>{{ o.text }}</span>
+              <span style="font-size:18px;font-weight:700;flex-shrink:0;">{{ o.mark }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ qAnswered }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:20px;border-radius:18px;background:#0B0B0B;color:#fff;padding:20px;animation:riseUpSm .4s both;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:{{ qVerdictCol }};margin-bottom:8px;">{{ qVerdict }}</div>
+            <div style="font-size:14px;line-height:1.45;color:rgba(255,255,255,.85);">{{ qExplain }}</div>
+            <button onClick="{{ nextQuestion }}" style="margin-top:18px;width:100%;height:50px;border-radius:999px;border:none;background:#B4F000;color:#0B0B0B;font-family:'Geist',sans-serif;font-size:16px;font-weight:600;cursor:pointer;">{{ qNextLabel }}</button>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ================= EXAM START (red) ================= -->
+      <sc-if value="{{ isExam }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#FF3A2D;color:#fff;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:30px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:10px;">Пробный экзамен</div>
+          <h1 style="font-size:48px;line-height:.92;font-weight:600;letter-spacing:-1.5px;margin:0;">Экзамен<br>ГИБДД</h1>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1px;border-radius:20px;overflow:hidden;background:rgba(255,255,255,.18);margin-bottom:30px;">
+          <div style="background:#FF3A2D;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:16px;font-weight:500;">Вопросов</span><span style="font-size:20px;font-weight:600;">20</span></div>
+          <div style="background:#FF3A2D;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:16px;font-weight:500;">Лимит ошибок</span><span style="font-size:20px;font-weight:600;">2 (+5 вопр.)</span></div>
+          <div style="background:#FF3A2D;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:16px;font-weight:500;">Время</span><span style="font-size:20px;font-weight:600;">20 минут</span></div>
+        </div>
+        <button onClick="{{ startExam }}" style="width:100%;height:62px;border-radius:999px;border:none;background:#EDE9DC;color:#0B0B0B;font-family:'Geist',sans-serif;font-size:18px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;" style-hover="background:#fff;">
+          Начать экзамен
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      </sc-if>
+
+      <!-- ================= EXAM RESULT (red, wrapped) ================= -->
+      <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#FF3A2D;color:#fff;overflow-y:auto;padding:60px 24px 36px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <button onClick="{{ backToExam }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="text-align:center;margin-top:14px;animation:fadeIn .5s both;">
+          <span style="font-family:'Geist Mono',monospace;font-size:18px;position:absolute;left:34px;top:120px;animation:twinkle 3s infinite;">✦</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:13px;position:absolute;right:42px;top:160px;animation:twinkle 2.4s infinite .6s;">✦</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:15px;position:absolute;right:30px;top:300px;animation:twinkle 2.8s infinite 1s;">✦</span>
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.8);">Результат экзамена</div>
+          <div style="font-size:150px;line-height:.86;font-weight:800;letter-spacing:-6px;margin:12px 0 0;animation:popIn .55s cubic-bezier(.2,.8,.2,1) both;">18<span style="font-size:64px;font-weight:600;opacity:.6;">/20</span></div>
+          <div style="display:inline-block;margin-top:14px;height:48px;line-height:48px;padding:0 28px;border-radius:999px;background:#0B0B0B;color:#fff;font-size:18px;font-weight:600;letter-spacing:.5px;">СДАНО ✓</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:34px;">
+          <div style="flex:1;border-radius:18px;background:rgba(11,11,11,.22);padding:18px;text-align:center;"><div style="font-size:28px;font-weight:700;">90%</div><div style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:4px;">Верно</div></div>
+          <div style="flex:1;border-radius:18px;background:rgba(11,11,11,.22);padding:18px;text-align:center;"><div style="font-size:28px;font-weight:700;">2</div><div style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:4px;">Ошибки</div></div>
+          <div style="flex:1;border-radius:18px;background:rgba(11,11,11,.22);padding:18px;text-align:center;"><div style="font-size:28px;font-weight:700;">12:40</div><div style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-top:4px;">Время</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px;">
+          <button style="width:100%;height:56px;border-radius:999px;border:none;background:#EDE9DC;color:#0B0B0B;font-family:'Geist',sans-serif;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>Поделиться</button>
+          <button onClick="{{ backToTickets }}" style="width:100%;height:56px;border-radius:999px;border:1.4px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-family:'Geist',sans-serif;font-size:16px;font-weight:600;cursor:pointer;">Работа над ошибками</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= SCHEDULE (yellow) ================= -->
+      <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#F4D400;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:22px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(11,11,11,.55);margin-bottom:10px;">Раздел</div>
+          <h1 style="font-size:46px;line-height:.92;font-weight:600;letter-spacing:-1.4px;margin:0;">Расписание</h1>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:24px;">
+          <div style="height:40px;padding:0 20px;border-radius:999px;background:#0B0B0B;color:#F4D400;display:flex;align-items:center;font-size:14px;font-weight:600;">Список</div>
+          <div style="height:40px;padding:0 20px;border-radius:999px;border:1.4px solid rgba(11,11,11,.3);display:flex;align-items:center;font-size:14px;font-weight:500;">Неделя</div>
+          <div style="height:40px;padding:0 20px;border-radius:999px;border:1.4px solid rgba(11,11,11,.3);display:flex;align-items:center;font-size:14px;font-weight:500;">Месяц</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+          <div style="border-radius:20px;background:#0B0B0B;color:#fff;padding:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:#F4D400;text-transform:uppercase;">Вождение · город</span><span style="font-size:13px;color:rgba(255,255,255,.6);">90 мин</span></div>
+            <div style="font-size:22px;font-weight:600;margin-top:10px;letter-spacing:-.4px;">Пн, 30 июня · 10:00</div>
+            <div style="font-size:14px;color:rgba(255,255,255,.65);margin-top:4px;">Игорь Семёнов · ул. Лесная, 12</div>
+          </div>
+          <div style="border-radius:20px;background:rgba(11,11,11,.08);padding:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(11,11,11,.55);text-transform:uppercase;">Теория · группа</span><span style="font-size:13px;color:rgba(11,11,11,.55);">60 мин</span></div>
+            <div style="font-size:22px;font-weight:600;margin-top:10px;letter-spacing:-.4px;">Ср, 2 июля · 18:30</div>
+            <div style="font-size:14px;color:rgba(11,11,11,.6);margin-top:4px;">Аудитория 3 · онлайн-трансляция</div>
+          </div>
+        </div>
+        <button onClick="{{ openBooking }}" style="width:100%;height:60px;border-radius:999px;border:none;background:#0B0B0B;color:#F4D400;font-family:'Geist',sans-serif;font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;">
+          Записаться на вождение
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      </sc-if>
+
+      <!-- ================= BOOKING (yellow) ================= -->
+      <sc-if value="{{ isBooking }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#F4D400;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+          <button onClick="{{ backToSchedule }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <sc-if value="{{ bookConfirmed }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;margin-top:70px;animation:fadeIn .5s both;">
+            <div style="width:96px;height:96px;border-radius:999px;background:#0B0B0B;color:#F4D400;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;animation:popIn .5s both;"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></div>
+            <h1 style="font-size:38px;font-weight:600;letter-spacing:-1px;margin:0 0 12px;line-height:1;">Запись<br>подтверждена</h1>
+            <div style="font-size:16px;color:rgba(11,11,11,.65);">Игорь Семёнов · Пт, 4 июля · 11:00</div>
+            <button onClick="{{ backToSchedule }}" style="margin-top:36px;height:56px;padding:0 34px;border-radius:999px;border:none;background:#0B0B0B;color:#F4D400;font-family:'Geist',sans-serif;font-size:16px;font-weight:600;cursor:pointer;">В расписание</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ bookSelecting }}" hint-placeholder-val="{{ true }}">
+          <div style="animation:riseUp .5s both;margin-bottom:22px;">
+            <h1 style="font-size:38px;line-height:.95;font-weight:600;letter-spacing:-1.1px;margin:0;">Выберите<br>инструктора</h1>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ instructors }}" as="i" hint-placeholder-count="3">
+              <div onClick="{{ i.onClick }}" style="border-radius:20px;background:{{ i.bg }};color:{{ i.fg }};padding:16px;display:flex;gap:14px;align-items:center;cursor:pointer;border:1.4px solid {{ i.bd }};">
+                <div style="width:60px;height:60px;border-radius:16px;background:repeating-linear-gradient(45deg,rgba(11,11,11,.14) 0 8px,transparent 8px 16px);border:1px dashed {{ i.dash }};flex-shrink:0;"></div>
+                <div style="flex:1;">
+                  <div style="font-size:18px;font-weight:600;letter-spacing:-.3px;">{{ i.name }}</div>
+                  <div style="font-size:13px;opacity:.7;margin-top:3px;">{{ i.car }}</div>
+                </div>
+                <div style="text-align:right;"><div style="font-size:15px;font-weight:600;">★ {{ i.rate }}</div><div style="font-family:'Geist Mono',monospace;font-size:10px;opacity:.6;letter-spacing:.5px;">{{ i.kpp }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(11,11,11,.55);margin:26px 0 12px;">Свободные слоты · {{ pickedInstr }}</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+            <sc-for list="{{ slots }}" as="s" hint-placeholder-count="6">
+              <div onClick="{{ s.onClick }}" style="height:50px;border-radius:14px;background:{{ s.bg }};color:{{ s.fg }};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;cursor:pointer;border:1.4px solid {{ s.bd }};">{{ s.t }}</div>
+            </sc-for>
+          </div>
+          <button onClick="{{ confirmBooking }}" style="width:100%;height:58px;margin-top:24px;border-radius:999px;border:none;background:#0B0B0B;color:#F4D400;font-family:'Geist',sans-serif;font-size:16px;font-weight:600;cursor:pointer;">Подтвердить запись</button>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ================= PROFILE (pink) ================= -->
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#FF49C0;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px;">
+          <div style="width:96px;height:96px;border-radius:999px;background:repeating-linear-gradient(45deg,rgba(11,11,11,.14) 0 9px,transparent 9px 18px);border:1px dashed rgba(11,11,11,.35);margin-bottom:16px;"></div>
+          <h1 style="font-size:34px;font-weight:600;letter-spacing:-.8px;margin:0;">Овчаренко А.К.</h1>
+          <div style="font-size:15px;color:rgba(11,11,11,.6);margin-top:6px;">+7 900 123-45-67</div>
+          <div style="display:inline-block;margin-top:12px;height:34px;line-height:34px;padding:0 16px;border-radius:999px;background:#0B0B0B;color:#fff;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;">КАТЕГОРИЯ B · МКПП</div>
+        </div>
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(11,11,11,.55);margin-bottom:12px;">Мой прогресс</div>
+        <div style="display:flex;gap:10px;margin-bottom:24px;">
+          <div style="flex:1;border-radius:18px;background:rgba(11,11,11,.1);padding:16px;"><div style="font-size:26px;font-weight:700;">24/56</div><div style="font-size:11px;color:rgba(11,11,11,.6);margin-top:4px;">часов вождения</div></div>
+          <div style="flex:1;border-radius:18px;background:rgba(11,11,11,.1);padding:16px;"><div style="font-size:26px;font-weight:700;">28/40</div><div style="font-size:11px;color:rgba(11,11,11,.6);margin-top:4px;">билетов решено</div></div>
+          <div style="flex:1;border-radius:18px;background:rgba(11,11,11,.1);padding:16px;"><div style="font-size:26px;font-weight:700;">4/6</div><div style="font-size:11px;color:rgba(11,11,11,.6);margin-top:4px;">модулей</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:rgba(11,11,11,.06);">
+          <div onClick="{{ goAchievements }}" style="padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid rgba(11,11,11,.1);"><span style="font-size:16px;font-weight:500;">Достижения</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div style="padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(11,11,11,.1);"><span style="font-size:16px;font-weight:500;">Документы</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:rgba(11,11,11,.55);">3 / 4</span></div>
+          <div onClick="{{ goPayment }}" style="padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid rgba(11,11,11,.1);"><span style="font-size:16px;font-weight:500;">Оплата курса</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div onClick="{{ goSettings }}" style="padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;"><span style="font-size:16px;font-weight:500;">Настройки</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= ACHIEVEMENTS (orange, wrapped) ================= -->
+      <sc-if value="{{ isAchv }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#FF7A00;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:24px;position:relative;">
+          <span style="font-family:'Geist Mono',monospace;position:absolute;right:6px;top:-6px;font-size:20px;animation:twinkle 3s infinite;">✦</span>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(11,11,11,.55);margin-bottom:10px;">6 из 12 открыто</div>
+          <h1 style="font-size:46px;line-height:.92;font-weight:600;letter-spacing:-1.4px;margin:0;">Достижения</h1>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <sc-for list="{{ achievements }}" as="a" hint-placeholder-count="6">
+            <div style="aspect-ratio:1/1.05;border-radius:20px;background:{{ a.bg }};color:{{ a.fg }};padding:16px;display:flex;flex-direction:column;justify-content:space-between;opacity:{{ a.op }};">
+              <div style="font-family:'Geist Mono',monospace;font-size:18px;">{{ a.icon }}</div>
+              <div><div style="font-size:18px;font-weight:600;line-height:1;letter-spacing:-.4px;">{{ a.title }}</div><div style="font-size:11px;opacity:.7;margin-top:6px;">{{ a.sub }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= SIGNS (purple) ================= -->
+      <sc-if value="{{ isSigns }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#7A3CFF;color:#fff;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:22px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px;">Справочник</div>
+          <h1 style="font-size:44px;line-height:.92;font-weight:600;letter-spacing:-1.3px;margin:0;">Дорожные<br>знаки</h1>
+        </div>
+        <div class="noscroll" style="display:flex;gap:8px;overflow-x:auto;margin-bottom:20px;">
+          <div style="height:36px;padding:0 16px;border-radius:999px;background:#fff;color:#7A3CFF;display:flex;align-items:center;font-size:13px;font-weight:600;white-space:nowrap;">Все</div>
+          <div style="height:36px;padding:0 16px;border-radius:999px;border:1.4px solid rgba(255,255,255,.35);display:flex;align-items:center;font-size:13px;font-weight:500;white-space:nowrap;">Запрещающие</div>
+          <div style="height:36px;padding:0 16px;border-radius:999px;border:1.4px solid rgba(255,255,255,.35);display:flex;align-items:center;font-size:13px;font-weight:500;white-space:nowrap;">Предупреждающие</div>
+          <div style="height:36px;padding:0 16px;border-radius:999px;border:1.4px solid rgba(255,255,255,.35);display:flex;align-items:center;font-size:13px;font-weight:500;white-space:nowrap;">Приоритета</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <sc-for list="{{ signs }}" as="s" hint-placeholder-count="6">
+            <div style="border-radius:18px;background:rgba(255,255,255,.1);padding:16px;position:relative;">
+              <div onClick="{{ s.onClick }}" style="position:absolute;top:12px;right:12px;font-size:18px;cursor:pointer;color:{{ s.heartCol }};">{{ s.heart }}</div>
+              <div style="width:56px;height:56px;border-radius:12px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.16) 0 8px,transparent 8px 16px);border:1px dashed rgba(255,255,255,.35);margin-bottom:14px;"></div>
+              <div style="font-size:15px;font-weight:600;line-height:1.1;letter-spacing:-.3px;">{{ s.name }}</div>
+              <div style="font-family:'Geist Mono',monospace;font-size:10px;color:rgba(255,255,255,.6);margin-top:5px;">{{ s.code }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= PAYMENT (mint) ================= -->
+      <sc-if value="{{ isPayment }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#D8F3E3;color:#0B0B0B;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#0B0B0B;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:28px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(11,11,11,.5);margin-bottom:10px;">Курс категории B</div>
+          <h1 style="font-size:46px;line-height:.92;font-weight:600;letter-spacing:-1.4px;margin:0;">Оплата<br>курса</h1>
+        </div>
+        <div style="border-radius:24px;background:#0B0B0B;color:#fff;padding:26px;margin-bottom:18px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55);">Оплачено</div>
+          <div style="font-size:42px;font-weight:700;letter-spacing:-1px;margin-top:8px;">28 000 ₽ <span style="font-size:20px;font-weight:500;color:rgba(255,255,255,.5);">/ 42 000 ₽</span></div>
+          <div style="height:8px;border-radius:999px;background:rgba(255,255,255,.18);margin-top:18px;overflow:hidden;"><div style="height:100%;width:66%;background:#D8F3E3;border-radius:999px;"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-top:12px;font-size:13px;color:rgba(255,255,255,.6);"><span>осталось 14 000 ₽</span><span>66%</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;border-radius:20px;overflow:hidden;background:rgba(11,11,11,.05);margin-bottom:20px;">
+          <div style="padding:16px 20px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(11,11,11,.08);"><span style="font-size:14px;color:rgba(11,11,11,.6);">Последний платёж</span><span style="font-size:14px;font-weight:600;">12 июня · 7 000 ₽</span></div>
+          <div style="padding:16px 20px;display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;color:rgba(11,11,11,.6);">Статус</span><span style="height:28px;line-height:28px;padding:0 12px;border-radius:999px;background:#0B0B0B;color:#D8F3E3;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.5px;">ПО ГРАФИКУ</span></div>
+        </div>
+        <button style="width:100%;height:62px;border-radius:999px;border:none;background:#0B0B0B;color:#fff;font-family:'Geist',sans-serif;font-size:17px;font-weight:600;cursor:pointer;">Оплатить 7 000 ₽</button>
+      </div>
+      </sc-if>
+
+      <!-- ================= SETTINGS (black) ================= -->
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+      <div class="noscroll" style="position:absolute;inset:0;background:#000;color:#fff;overflow-y:auto;padding:62px 24px 40px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
+          <button onClick="{{ openMenu }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="28" height="14" viewBox="0 0 28 14" stroke="currentColor" stroke-width="1.4"><line x1="0" y1="3" x2="20" y2="3"/><line x1="0" y1="10" x2="28" y2="10"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="animation:riseUp .55s cubic-bezier(.2,.7,.2,1) both;margin-bottom:30px;">
+          <h1 style="font-size:46px;line-height:.92;font-weight:600;letter-spacing:-1.4px;margin:0;">Настройки</h1>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);"><span style="font-size:20px;font-weight:500;letter-spacing:-.3px;">Профиль</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg></div>
+          <div style="padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);"><span style="font-size:20px;font-weight:500;letter-spacing:-.3px;">Уведомления</span><div style="width:46px;height:28px;border-radius:999px;background:#EDE9DC;position:relative;"><div style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:999px;background:#000;"></div></div></div>
+          <div style="padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);"><span style="font-size:20px;font-weight:500;letter-spacing:-.3px;">Биометрический вход</span><div style="width:46px;height:28px;border-radius:999px;background:rgba(255,255,255,.2);position:relative;"><div style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:999px;background:#fff;"></div></div></div>
+          <div style="padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);"><span style="font-size:20px;font-weight:500;letter-spacing:-.3px;">Тема</span><span style="font-size:15px;color:rgba(255,255,255,.5);">Тёмная</span></div>
+          <div style="padding:20px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);"><span style="font-size:20px;font-weight:500;letter-spacing:-.3px;">Язык</span><span style="font-size:15px;color:rgba(255,255,255,.5);">Русский</span></div>
+          <div style="padding:20px 0;"><span style="font-size:20px;font-weight:500;letter-spacing:-.3px;color:#FF3A2D;">Выйти</span></div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= MENU OVERLAY ================= -->
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;background:#000;color:#fff;z-index:80;padding:62px 24px 40px;display:flex;flex-direction:column;animation:menuDrop .42s cubic-bezier(.5,0,.1,1) both;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:auto;">
+          <button onClick="{{ closeMenu }}" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;display:flex;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          <span style="font-size:15px;font-weight:500;letter-spacing:-.3px;">.auto</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;padding-bottom:30px;">
+          <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="10">
+            <div onClick="{{ m.onClick }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:{{ m.col }};animation:menuItemIn .5s both;animation-delay:{{ m.delay }};" style-hover="color:#fff;">
+              <span style="font-size:34px;font-weight:500;letter-spacing:-1px;line-height:1.18;">{{ m.label }}</span>
+              <span style="opacity:{{ m.arrowOp }};"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ================= FILL TRANSITION OVERLAY ================= -->
+      <div ref="{{ setOvRef }}" style="position:absolute;inset:0;z-index:120;display:none;pointer-events:none;clip-path:circle(0px at 50% 50%);"></div>
+
+      <!-- home indicator -->
+      <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:128px;height:5px;border-radius:999px;background:{{ homeIndCol }};z-index:70;pointer-events:none;"></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:454,&quot;height&quot;:892},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Онбординг&quot;,&quot;Главная&quot;,&quot;Меню&quot;],&quot;default&quot;:&quot;Онбординг&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Демо&quot;},&quot;animateFill&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо&quot;},&quot;showStatusBar&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const map = { 'Онбординг': 'ob1', 'Главная': 'home', 'Меню': 'menu' };
+    let start = map[props && props.startScreen] || 'ob1';
+    let menu = false;
+    if (start === 'menu') { start = 'home'; menu = true; }
+    this.state = {
+      screen: start,
+      menuOpen: menu,
+      kpp: 'mkpp',
+      theoryTab: 'preview',
+      qi: 0, answered: false, sel: null,
+      bookStep: 'select', bookConfirmed: false, pickedInstr: 'Игорь Семёнов', pickedSlot: 1,
+      saved: { 0: true, 3: true }
+    };
+
+    this.screenRefCb = (el) => { this.screenEl = el; };
+    this.ovRefCb = (el) => { this.ovEl = el; };
+
+    this.sections = [
+      { id: 'home', label: 'Главная', bg: '#000000', fg: '#FFFFFF' },
+      { id: 'theory', label: 'Теория', bg: '#1F2BFF', fg: '#FFFFFF' },
+      { id: 'tickets', label: 'Билеты', bg: '#B4F000', fg: '#0B0B0B' },
+      { id: 'exam', label: 'Экзамен', bg: '#FF3A2D', fg: '#FFFFFF' },
+      { id: 'schedule', label: 'Расписание', bg: '#F4D400', fg: '#0B0B0B' },
+      { id: 'achievements', label: 'Достижения', bg: '#FF7A00', fg: '#0B0B0B' },
+      { id: 'signs', label: 'Знаки', bg: '#7A3CFF', fg: '#FFFFFF' },
+      { id: 'profile', label: 'Профиль', bg: '#FF49C0', fg: '#0B0B0B' },
+      { id: 'payment', label: 'Оплата', bg: '#D8F3E3', fg: '#0B0B0B' },
+      { id: 'settings', label: 'Настройки', bg: '#000000', fg: '#FFFFFF' }
+    ];
+
+    this.questions = [
+      {
+        text: 'Разрешено ли вам выполнить разворот на этом участке дороги?',
+        options: ['Разрешено', 'Разрешено, только если не создадите помех встречным', 'Запрещено'],
+        correct: 2,
+        explain: 'На участке с разметкой 1.1 (сплошная линия) и в зоне действия знака «Разворот запрещён» выполнять разворот нельзя.'
+      },
+      {
+        text: 'Кто из водителей имеет преимущество на нерегулируемом перекрёстке равнозначных дорог?',
+        options: ['Тот, кто поворачивает налево', 'Тот, у кого нет помехи справа', 'Тот, кто въехал первым'],
+        correct: 1,
+        explain: 'На равнозначном перекрёстке действует «правило правой руки»: уступает тот, у кого помеха справа.'
+      },
+      {
+        text: 'С какой максимальной скоростью разрешено движение в населённом пункте?',
+        options: ['60 км/ч', '90 км/ч', '40 км/ч'],
+        correct: 0,
+        explain: 'В населённых пунктах разрешено движение со скоростью не более 60 км/ч, если знаками не установлено иное.'
+      }
+    ];
+
+    this.modules = [
+      { id: 'signs', title: 'Дорожные знаки', meta: '9 уроков · ~40 мин', pct: '44%', tag: 'Знаки' },
+      { id: 'markup', title: 'Дорожная разметка', meta: '6 уроков · ~25 мин', pct: '100%', tag: 'Разметка' },
+      { id: 'cross', title: 'Проезд перекрёстков', meta: '8 уроков · ~50 мин', pct: '20%', tag: 'Манёвры' },
+      { id: 'over', title: 'Обгон и разъезд', meta: '5 уроков · ~30 мин', pct: '0%', tag: 'Манёвры' },
+      { id: 'speed', title: 'Скорость движения', meta: '4 урока · ~20 мин', pct: '60%', tag: 'Режим' },
+      { id: 'park', title: 'Остановка и стоянка', meta: '6 уроков · ~28 мин', pct: '0%', tag: 'Стоянка' }
+    ];
+
+    this.instructorData = [
+      { name: 'Игорь Семёнов', car: 'Kia Rio · седан', rate: '4.9', kpp: 'МКПП' },
+      { name: 'Марина Лебедева', car: 'VW Polo · седан', rate: '4.8', kpp: 'АКПП' },
+      { name: 'Алексей Гром', car: 'Hyundai Solaris', rate: '4.7', kpp: 'МКПП' }
+    ];
+
+    this.slotData = ['09:00', '11:00', '13:30', '15:00', '17:00', '18:30'];
+
+    this.achvData = [
+      { icon: '01', title: 'Первый экзамен', sub: 'сдан 14 июня', locked: false },
+      { icon: '🔥', title: '7 дней подряд', sub: 'стрик активен', locked: false },
+      { icon: '◆', title: 'Все знаки', sub: 'выучено 100%', locked: false },
+      { icon: '✦', title: '100 вопросов', sub: 'решено 128', locked: false },
+      { icon: '★', title: '20/20 без ошибок', sub: 'заблокировано', locked: true },
+      { icon: '◎', title: '90% готовности', sub: 'заблокировано', locked: true }
+    ];
+
+    this.signData = [
+      { name: 'Главная дорога', code: '2.1' },
+      { name: 'Уступи дорогу', code: '2.4' },
+      { name: 'Движение запрещено', code: '3.2' },
+      { name: 'Обгон запрещён', code: '3.20' },
+      { name: 'Пешеходный переход', code: '5.19.1' },
+      { name: 'Ограничение скорости', code: '3.24' }
+    ];
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.startScreen !== this.props.startScreen) {
+      const map = { 'Онбординг': 'ob1', 'Главная': 'home', 'Меню': 'menu' };
+      let s = map[this.props.startScreen] || 'ob1';
+      let menu = false;
+      if (s === 'menu') { s = 'home'; menu = true; }
+      this.setState({ screen: s, menuOpen: menu });
+    }
+  }
+
+  themeFor(id) {
+    const black = ['ob1','ob2','ob3','form','home','settings'];
+    if (black.includes(id)) return { bg: '#000000', fg: '#FFFFFF' };
+    if (id === 'theory' || id === 'module') return { bg: '#1F2BFF', fg: '#FFFFFF' };
+    if (id === 'tickets' || id === 'quiz') return { bg: '#B4F000', fg: '#0B0B0B' };
+    if (id === 'exam' || id === 'result') return { bg: '#FF3A2D', fg: '#FFFFFF' };
+    if (id === 'schedule' || id === 'booking') return { bg: '#F4D400', fg: '#0B0B0B' };
+    if (id === 'achievements') return { bg: '#FF7A00', fg: '#0B0B0B' };
+    if (id === 'signs') return { bg: '#7A3CFF', fg: '#FFFFFF' };
+    if (id === 'profile') return { bg: '#FF49C0', fg: '#0B0B0B' };
+    if (id === 'payment') return { bg: '#D8F3E3', fg: '#0B0B0B' };
+    return { bg: '#000000', fg: '#FFFFFF' };
+  }
+
+  setScreenRef(el) { this.screenEl = el; }
+  setOvRef(el) { this.ovEl = el; }
+
+  goToFill(id, e) {
+    const animate = this.props.animateFill !== false;
+    if (!animate || !this.ovEl || !this.screenEl || !e) {
+      this.setState({ screen: id, menuOpen: false });
+      return;
+    }
+    const theme = this.themeFor(id);
+    const rect = this.screenEl.getBoundingClientRect();
+    const x = (e.clientX != null ? e.clientX : rect.left + rect.width / 2) - rect.left;
+    const y = (e.clientY != null ? e.clientY : rect.top + rect.height / 2) - rect.top;
+    const ov = this.ovEl;
+    ov.style.background = theme.bg;
+    ov.style.display = 'block';
+    ov.style.transition = 'none';
+    ov.style.clipPath = 'circle(0px at ' + x + 'px ' + y + 'px)';
+    void ov.offsetWidth;
+    ov.style.transition = 'clip-path 640ms cubic-bezier(.7,0,.25,1)';
+    ov.style.clipPath = 'circle(1050px at ' + x + 'px ' + y + 'px)';
+    const done = () => {
+      ov.removeEventListener('transitionend', done);
+      this.setState({ screen: id, menuOpen: false }, () => {
+        requestAnimationFrame(() => {
+          ov.style.display = 'none';
+          ov.style.transition = 'none';
+          ov.style.clipPath = 'circle(0px at 50% 50%)';
+        });
+      });
+    };
+    ov.addEventListener('transitionend', done);
+  }
+
+  go(id) { this.setState({ screen: id, menuOpen: false }); }
+
+  renderVals() {
+    const st = this.state;
+    const scr = st.screen;
+    const theme = this.themeFor(scr);
+    const q = this.questions[st.qi % this.questions.length];
+
+    // menu items
+    const menuItems = this.sections.map((s, idx) => ({
+      label: s.label,
+      col: s.id === scr ? '#FFFFFF' : '#6E6E6E',
+      arrowOp: s.id === scr ? '1' : '0',
+      delay: (0.04 + idx * 0.035).toFixed(2) + 's',
+      onClick: (e) => this.goToFill(s.id, e)
+    }));
+
+    // theory modules
+    const modules = this.modules.map(m => ({
+      title: m.title, meta: m.meta, pct: m.pct, tag: m.tag,
+      onClick: () => this.go('module')
+    }));
+
+    // tickets grid
+    const tickets = [];
+    for (let i = 1; i <= 40; i++) {
+      let bg = 'rgba(11,11,11,.07)', fg = '#0B0B0B', border = 'none';
+      const mod = i % 7;
+      if (i <= 12 && mod !== 3) { bg = '#0B0B0B'; fg = '#B4F000'; } // solved
+      else if (mod === 3) { bg = '#FF3A2D'; fg = '#fff'; }          // with errors
+      else { border = '1.4px solid rgba(11,11,11,.18)'; }            // untouched
+      tickets.push({ n: i, bg, fg, border, onClick: () => this.go('quiz') });
+    }
+
+    // quiz options
+    const qOptions = q.options.map((text, idx) => {
+      let bg = 'rgba(11,11,11,.05)', fg = '#0B0B0B', bd = 'rgba(11,11,11,.18)', mark = '';
+      if (st.answered) {
+        if (idx === q.correct) { bg = '#0B0B0B'; fg = '#B4F000'; bd = '#0B0B0B'; mark = '✓'; }
+        else if (idx === st.sel) { bg = 'rgba(255,58,45,.15)'; bd = '#FF3A2D'; fg = '#FF3A2D'; mark = '✕'; }
+        else { fg = 'rgba(11,11,11,.4)'; }
+      }
+      return { text, bg, fg, bd, mark, onClick: () => { if (!st.answered) this.setState({ answered: true, sel: idx }); } };
+    });
+    const correctChosen = st.answered && st.sel === q.correct;
+    const isLast = (st.qi % this.questions.length) === this.questions.length - 1;
+
+    // instructors
+    const instructors = this.instructorData.map(i => {
+      const active = i.name === st.pickedInstr;
+      return {
+        name: i.name, car: i.car, rate: i.rate, kpp: i.kpp,
+        bg: active ? '#0B0B0B' : 'rgba(11,11,11,.05)',
+        fg: active ? '#fff' : '#0B0B0B',
+        bd: active ? '#0B0B0B' : 'rgba(11,11,11,.15)',
+        dash: active ? 'rgba(255,255,255,.4)' : 'rgba(11,11,11,.35)',
+        onClick: () => this.setState({ pickedInstr: i.name })
+      };
+    });
+
+    // slots
+    const slots = this.slotData.map((t, idx) => {
+      const active = idx === st.pickedSlot;
+      return {
+        t,
+        bg: active ? '#0B0B0B' : 'transparent',
+        fg: active ? '#F4D400' : '#0B0B0B',
+        bd: active ? '#0B0B0B' : 'rgba(11,11,11,.3)',
+        onClick: () => this.setState({ pickedSlot: idx })
+      };
+    });
+
+    // achievements
+    const achievements = this.achvData.map(a => ({
+      icon: a.icon, title: a.title, sub: a.sub,
+      bg: a.locked ? 'rgba(11,11,11,.08)' : '#0B0B0B',
+      fg: a.locked ? 'rgba(11,11,11,.5)' : '#FF7A00',
+      op: a.locked ? '.55' : '1'
+    }));
+
+    // signs
+    const signs = this.signData.map((s, idx) => {
+      const fav = !!st.saved[idx];
+      return {
+        name: s.name, code: s.code,
+        heart: fav ? '♥' : '♡',
+        heartCol: fav ? '#fff' : 'rgba(255,255,255,.55)',
+        onClick: () => this.setState(p => ({ saved: Object.assign({}, p.saved, { [idx]: !p.saved[idx] }) }))
+      };
+    });
+
+    // dots
+    const dot = (active) => React.createElement('div', { style: { width: active ? '24px' : '8px', height: '8px', borderRadius: '999px', background: active ? '#fff' : 'rgba(255,255,255,.3)', transition: 'all .3s' } });
+    const dots = (n) => React.createElement('div', { style: { display: 'flex', gap: '8px' } }, dot(n === 0), dot(n === 1), dot(n === 2));
+
+    return {
+      // frame / chrome
+      frameShell: 'width:414px;padding:12px;background:#0B0B0B;border-radius:56px;box-shadow:0 40px 90px -30px rgba(0,0,0,.55);',
+      screenRadius: '44px',
+      setScreenRef: this.screenRefCb,
+      setOvRef: this.ovRefCb,
+      showStatus: this.props.showStatusBar !== false && scr !== 'ob1' && scr !== 'ob2' && scr !== 'ob3',
+      statusFg: st.menuOpen ? '#FFFFFF' : theme.fg,
+      homeIndCol: st.menuOpen ? 'rgba(255,255,255,.5)' : (theme.fg === '#FFFFFF' ? 'rgba(255,255,255,.45)' : 'rgba(11,11,11,.35)'),
+
+      // screen flags
+      isOb1: scr === 'ob1', isOb2: scr === 'ob2', isOb3: scr === 'ob3', isForm: scr === 'form',
+      isHome: scr === 'home', isTheory: scr === 'theory', isModule: scr === 'module',
+      isTickets: scr === 'tickets', isQuiz: scr === 'quiz', isExam: scr === 'exam', isResult: scr === 'result',
+      isSchedule: scr === 'schedule', isBooking: scr === 'booking',
+      isProfile: scr === 'profile', isAchv: scr === 'achievements', isSigns: scr === 'signs',
+      isPayment: scr === 'payment', isSettings: scr === 'settings',
+      menuOpen: st.menuOpen,
+
+      // onboarding
+      dots1: dots(0), dots2: dots(1), dots3: dots(2),
+      toOb2: () => this.go('ob2'), toOb3: () => this.go('ob3'), toForm: () => this.go('form'),
+      enterApp: () => this.go('home'),
+
+      // form kpp
+      setMkpp: () => this.setState({ kpp: 'mkpp' }),
+      setAkpp: () => this.setState({ kpp: 'akpp' }),
+      mkppBg: st.kpp === 'mkpp' ? '#EDE9DC' : 'transparent',
+      mkppFg: st.kpp === 'mkpp' ? '#0B0B0B' : 'rgba(255,255,255,.6)',
+      akppBg: st.kpp === 'akpp' ? '#EDE9DC' : 'transparent',
+      akppFg: st.kpp === 'akpp' ? '#0B0B0B' : 'rgba(255,255,255,.6)',
+
+      // menu
+      openMenu: () => this.setState({ menuOpen: true }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      menuItems,
+
+      // home
+      openModule: () => this.go('module'),
+
+      // theory
+      modules,
+      backToTheory: () => this.go('theory'),
+      setTabPreview: () => this.setState({ theoryTab: 'preview' }),
+      setTabDetails: () => this.setState({ theoryTab: 'details' }),
+      tabPrevCol: st.theoryTab === 'preview' ? '#fff' : 'rgba(255,255,255,.5)',
+      tabPrevBd: st.theoryTab === 'preview' ? '#fff' : 'transparent',
+      tabDetCol: st.theoryTab === 'details' ? '#fff' : 'rgba(255,255,255,.5)',
+      tabDetBd: st.theoryTab === 'details' ? '#fff' : 'transparent',
+
+      // tickets / quiz
+      tickets,
+      startQuiz: () => this.setState({ screen: 'quiz', qi: 0, answered: false, sel: null }),
+      backToTickets: () => this.go('tickets'),
+      qNum: (st.qi % this.questions.length) + 7,
+      qPct: (((st.qi % this.questions.length) + 7) / 20 * 100).toFixed(0) + '%',
+      qText: q.text,
+      qOptions,
+      qAnswered: st.answered,
+      qVerdict: correctChosen ? 'ВЕРНО' : 'ОШИБКА',
+      qVerdictCol: correctChosen ? '#B4F000' : '#FF6B5E',
+      qExplain: q.explain,
+      qNextLabel: isLast ? 'Завершить' : 'Следующий вопрос',
+      nextQuestion: () => {
+        if (isLast) { this.go('tickets'); }
+        else { this.setState(p => ({ qi: p.qi + 1, answered: false, sel: null })); }
+      },
+
+      // exam
+      goExam: () => this.go('exam'),
+      startExam: () => this.go('result'),
+      backToExam: () => this.go('exam'),
+
+      // schedule / booking
+      openBooking: () => this.setState({ screen: 'booking', bookConfirmed: false }),
+      backToSchedule: () => this.go('schedule'),
+      bookConfirmed: st.bookConfirmed,
+      bookSelecting: !st.bookConfirmed,
+      instructors,
+      slots,
+      pickedInstr: st.pickedInstr,
+      confirmBooking: () => this.setState({ bookConfirmed: true }),
+
+      // profile links
+      goAchievements: () => this.go('achievements'),
+      goPayment: () => this.go('payment'),
+      goSettings: () => this.go('settings'),
+
+      // achievements / signs
+      achievements,
+      signs
+    };
+  }
+}
+</script>
+</body>
+</html>
