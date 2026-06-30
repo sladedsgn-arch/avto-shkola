@@ -81,7 +81,7 @@ export function OnboardingPage() {
 
       {screen === 'ob1' && <>
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/onboarding/1.png" alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
+          <img src={`${import.meta.env.BASE_URL}images/onboarding/1.png`} alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
         </div>
         <div style={{ animation: 'riseUp .6s cubic-bezier(.2,.7,.2,1) both' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 2, color: 'rgba(255,255,255,.45)', textTransform: 'uppercase', marginBottom: 14 }}>01 — 03</div>
@@ -95,7 +95,7 @@ export function OnboardingPage() {
 
       {screen === 'ob2' && <>
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/onboarding/2.png" alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
+          <img src={`${import.meta.env.BASE_URL}images/onboarding/2.png`} alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
         </div>
         <div style={{ animation: 'riseUp .6s cubic-bezier(.2,.7,.2,1) both' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 2, color: 'rgba(255,255,255,.45)', textTransform: 'uppercase', marginBottom: 14 }}>02 — 03</div>
@@ -109,7 +109,7 @@ export function OnboardingPage() {
 
       {screen === 'ob3' && <>
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src="/images/onboarding/3.png" alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
+          <img src={`${import.meta.env.BASE_URL}images/onboarding/3.png`} alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
         </div>
         <div style={{ animation: 'riseUp .6s cubic-bezier(.2,.7,.2,1) both' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 2, color: 'rgba(255,255,255,.45)', textTransform: 'uppercase', marginBottom: 14 }}>03 — 03</div>
