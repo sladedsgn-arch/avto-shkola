@@ -52,7 +52,9 @@ export function SignsPage() {
           return (
             <div key={s.id} style={{ borderRadius: 18, background: 'rgba(255,255,255,.1)', padding: 16, position: 'relative' }}>
               <div onClick={() => toggle(s.id)} style={{ position: 'absolute', top: 12, right: 12, fontSize: 18, cursor: 'pointer', color: fav ? '#fff' : 'rgba(255,255,255,.55)' }}>{fav ? '♥' : '♡'}</div>
-              <div style={{ width: 56, height: 56, borderRadius: 12, background: 'repeating-linear-gradient(45deg,rgba(255,255,255,.16) 0 8px,transparent 8px 16px)', border: '1px dashed rgba(255,255,255,.35)', marginBottom: 14 }}/>
+              <div style={{ width: 56, height: 56, borderRadius: 12, background: 'rgba(255,255,255,.12)', marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>
+                {s.category === 'Запрещающие' ? '🚫' : s.category === 'Предупреждающие' ? '⚠️' : s.category === 'Предписывающие' ? '🔵' : s.category === 'Приоритета' ? '🔺' : '🛣️'}
+              </div>
               <div style={{ fontSize: 15, fontWeight: 600, lineHeight: 1.1, letterSpacing: '-.3px' }}>{s.name}</div>
               <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 10, color: 'rgba(255,255,255,.6)', marginTop: 5 }}>{s.code}</div>
             </div>

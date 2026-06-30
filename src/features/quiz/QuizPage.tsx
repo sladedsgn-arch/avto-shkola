@@ -70,8 +70,26 @@ export function QuizPage() {
         <span style={{ width: 26 }}/>
       </div>
       <div style={{ height: 5, borderRadius: 999, background: 'rgba(11,11,11,.15)', overflow: 'hidden', marginBottom: 26 }}><div style={{ height: '100%', background: '#0B0B0B', borderRadius: 999, width: qPct, transition: 'width .4s' }}/></div>
-      <div style={{ height: 170, borderRadius: 18, background: 'rgba(11,11,11,.06)', border: '1px dashed rgba(11,11,11,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
-        <span style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 1, textTransform: 'uppercase', color: 'rgba(11,11,11,.5)' }}>{q.image_tag || 'илл. вопроса — дорожная ситуация'}</span>
+      <div style={{ height: 170, borderRadius: 18, background: 'rgba(11,11,11,.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginBottom: 22, gap: 8 }}>
+        <span style={{ fontSize: 64 }}>
+          {/перекрёст|перекрест/i.test(q.text) ? '🚦' :
+           /обгон|опережен/i.test(q.text) ? '🏎️' :
+           /пешеход/i.test(q.text) ? '🚶' :
+           /знак/i.test(q.text) ? '🪧' :
+           /скорост/i.test(q.text) ? '⚡' :
+           /парков|стоянк/i.test(q.text) ? '🅿️' :
+           /алкогол|опьян/i.test(q.text) ? '🚫' :
+           /ремень|безопасност/i.test(q.text) ? '🔒' :
+           /туман|видимост/i.test(q.text) ? '🌫️' :
+           /дождь|гололед|скользк/i.test(q.text) ? '🌧️' :
+           /велосипед/i.test(q.text) ? '🚲' :
+           /трамвай/i.test(q.text) ? '🚃' :
+           /мотоцикл/i.test(q.text) ? '🏍️' :
+           /грузов/i.test(q.text) ? '🚚' :
+           /автобус|маршрутк/i.test(q.text) ? '🚌' :
+           '🛣️'}
+        </span>
+        {q.image_tag && <span style={{ fontFamily: "'Geist Mono',monospace", fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', color: 'rgba(11,11,11,.4)' }}>{q.image_tag}</span>}
       </div>
       <h2 style={{ fontSize: 23, lineHeight: 1.12, fontWeight: 600, letterSpacing: '-.5px', margin: '0 0 22px' }}>{q.text}</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

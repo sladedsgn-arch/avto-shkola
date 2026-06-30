@@ -154,7 +154,9 @@ export function BookingPage() {
               const active = i.id === pickedInstr?.id
               return (
                 <div key={i.id} onClick={() => setPickedInstr(i)} style={{ borderRadius: 20, background: active ? '#0B0B0B' : 'rgba(11,11,11,.05)', color: active ? '#fff' : '#0B0B0B', padding: 16, display: 'flex', gap: 14, alignItems: 'center', cursor: 'pointer', border: `1.4px solid ${active ? '#0B0B0B' : 'rgba(11,11,11,.15)'}` }}>
-                  <div style={{ width: 52, height: 52, borderRadius: 14, background: 'repeating-linear-gradient(45deg,rgba(11,11,11,.14) 0 8px,transparent 8px 16px)', border: `1px dashed ${active ? 'rgba(255,255,255,.4)' : 'rgba(11,11,11,.35)'}`, flexShrink: 0 }}/>
+                  <div style={{ width: 52, height: 52, borderRadius: 14, background: active ? 'rgba(255,255,255,.12)' : 'rgba(11,11,11,.08)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>
+                    {i.full_name.includes('Наталья') ? '👩' : '👨'}
+                  </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-.3px' }}>{i.full_name}</div>
                     <div style={{ fontSize: 12, opacity: .7, marginTop: 2 }}>{i.car_model}</div>

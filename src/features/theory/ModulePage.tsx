@@ -49,9 +49,10 @@ export function ModulePage() {
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 17, fontWeight: 600 }}>{LESSONS[0].title}</div>
             <div style={{ fontSize: 13, color: 'rgba(255,255,255,.65)', marginTop: 5, lineHeight: 1.4 }}>{LESSONS[0].sub}</div>
-            <div style={{ marginTop: 14, height: 150, borderRadius: 16, background: 'repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 11px,transparent 11px 22px)', border: '1px dashed rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <div style={{ width: 52, height: 52, borderRadius: 999, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><svg width="20" height="20" viewBox="0 0 24 24" fill="#1F2BFF"><path d="M8 5v14l11-7z"/></svg></div>
+            <div style={{ marginTop: 14, height: 150, borderRadius: 16, background: 'rgba(255,255,255,.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', fontSize: 52 }}>
+              🎬
               <div style={{ position: 'absolute', bottom: 10, left: 12, fontFamily: "'Geist Mono',monospace", fontSize: 10, letterSpacing: 1, color: 'rgba(255,255,255,.55)', textTransform: 'uppercase' }}>видео 4:20</div>
+              <div style={{ position: 'absolute', right: 12, bottom: 10, width: 36, height: 36, borderRadius: 999, background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><svg width="14" height="14" viewBox="0 0 24 24" fill="#1F2BFF"><path d="M8 5v14l11-7z"/></svg></div>
             </div>
           </div>
         </div>

@@ -86,7 +86,9 @@ export function OnboardingPage() {
       <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: 15, fontWeight: 500, letterSpacing: '-.3px' }}>.auto</div>
 
       {screen === 'ob1' && <>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{illBox('rgba(255,255,255,.07)', 'илл. — открытая книга\n+ дорожный знак')}</div>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/onboarding/1.png" alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
+        </div>
         <div style={{ animation: 'riseUp .6s cubic-bezier(.2,.7,.2,1) both' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 2, color: 'rgba(255,255,255,.45)', textTransform: 'uppercase', marginBottom: 14 }}>01 — 03</div>
           <h1 style={{ fontSize: 44, lineHeight: .98, fontWeight: 600, letterSpacing: '-1.2px', margin: 0 }}>Вся теория ПДД в кармане</h1>
@@ -98,7 +100,9 @@ export function OnboardingPage() {
       </>}
 
       {screen === 'ob2' && <>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{illBox('rgba(31,43,255,.18)', 'илл. — чек-лист\n+ секундомер')}</div>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/onboarding/2.png" alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
+        </div>
         <div style={{ animation: 'riseUp .6s cubic-bezier(.2,.7,.2,1) both' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 2, color: 'rgba(255,255,255,.45)', textTransform: 'uppercase', marginBottom: 14 }}>02 — 03</div>
           <h1 style={{ fontSize: 44, lineHeight: .98, fontWeight: 600, letterSpacing: '-1.2px', margin: 0 }}>Билеты и пробный экзамен ГИБДД</h1>
@@ -110,7 +114,9 @@ export function OnboardingPage() {
       </>}
 
       {screen === 'ob3' && <>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{illBox('rgba(244,212,0,.18)', 'илл. — машина\n+ календарь')}</div>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img src="/images/onboarding/3.png" alt="" style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 24 }} />
+        </div>
         <div style={{ animation: 'riseUp .6s cubic-bezier(.2,.7,.2,1) both' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 2, color: 'rgba(255,255,255,.45)', textTransform: 'uppercase', marginBottom: 14 }}>03 — 03</div>
           <h1 style={{ fontSize: 44, lineHeight: .98, fontWeight: 600, letterSpacing: '-1.2px', margin: 0 }}>Расписание и прогресс в одном месте</h1>

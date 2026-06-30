@@ -25,7 +25,7 @@ export function ProfilePage() {
         <span style={{ fontSize: 15, fontWeight: 500, letterSpacing: '-.3px' }}>.auto</span>
       </div>
       <div style={{ animation: 'riseUp .55s cubic-bezier(.2,.7,.2,1) both', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: 28 }}>
-        <div style={{ width: 96, height: 96, borderRadius: 999, background: 'repeating-linear-gradient(45deg,rgba(11,11,11,.14) 0 9px,transparent 9px 18px)', border: '1px dashed rgba(11,11,11,.35)', marginBottom: 16 }}/>
+        <div style={{ width: 96, height: 96, borderRadius: 999, background: 'rgba(11,11,11,.08)', marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>👤</div>
         <h1 style={{ fontSize: 34, fontWeight: 600, letterSpacing: '-.8px', margin: 0 }}>{user.full_name}</h1>
         <div style={{ fontSize: 15, color: 'rgba(11,11,11,.6)', marginTop: 6 }}>{user.phone}</div>
         <div style={{ display: 'inline-block', marginTop: 12, height: 34, lineHeight: '34px', padding: '0 16px', borderRadius: 999, background: '#0B0B0B', color: '#fff', fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 1 }}>КАТЕГОРИЯ {user.category} · {user.gearbox}</div>
