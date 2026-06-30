@@ -1,41 +1,68 @@
 import { useEffect, useState } from 'react'
 import { useAuthStore } from '@/store/authStore'
 import { useLayoutCtx } from '@/app/LayoutContext'
-import { theoryRepo, examRepo, lessonRepo } from '@/db/repositories'
+import { theoryRepo, examRepo, lessonRepo, instructorRepo } from '@/db/repositories'
 import { calcReadiness } from '@/lib/readiness'
+import type { Lesson, Instructor } from '@/db/types'
+
+const MONTH_SHORT = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек']
+const DAY_SHORT = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб']
+
+function fmtTime(iso: string) {
+  const d = new Date(iso)
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+}
+function fmtEnd(iso: string, min: number) {
+  const d = new Date(new Date(iso).getTime() + min * 60000)
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+}
 
 export function HomePage() {
   const { openMenu, goToFill } = useLayoutCtx()
   const user = useAuthStore(s => s.user)!
-  const [readiness, setReadiness] = useState(72)
-  const [remainingModules, setRemainingModules] = useState(8)
+  const [readiness, setReadiness] = useState(0)
+  const [remainingModules, setRemainingModules] = useState(0)
+  const [lessons, setLessons] = useState<Lesson[]>([])
+  const [instructors, setInstructors] = useState<Record<number, Instructor>>({})
 
   useEffect(() => {
     async function load() {
-      const mods = await theoryRepo.getModules()
-      const progList = await theoryRepo.getProgress(user.id)
+      const [mods, progList, passed, allLessons, allInstructors] = await Promise.all([
+        theoryRepo.getModules(),
+        theoryRepo.getProgress(user.id),
+        examRepo.getPassedTickets(user.id),
+        lessonRepo.getUserLessons(user.id),
+        instructorRepo.getAll(),
+      ])
       const completed = progList.filter(p => p.done).length
-      const passed = await examRepo.getPassedTickets(user.id)
-      await lessonRepo.getUserLessons(user.id)
-      // Пока студент ещё не начал — показываем демо-состояние из макета (72%).
-      // Как только есть реальный прогресс — пересчитываем по формуле готовности.
-      const hasProgress = completed > 0 || passed > 0
-      if (hasProgress) {
-        setRemainingModules(Math.max(0, mods.length - completed))
-        setReadiness(calcReadiness({
-          completedModules: completed,
-          totalModules: mods.length,
-          passedTickets: passed,
-          drivingHours: user.driving_hours,
-        }))
-      }
+      setRemainingModules(Math.max(0, mods.length - completed))
+      setReadiness(calcReadiness({ completedModules: completed, totalModules: mods.length, passedTickets: passed, drivingHours: user.driving_hours }))
+
+      const instrMap: Record<number, Instructor> = {}
+      for (const i of allInstructors) instrMap[i.id] = i
+      setInstructors(instrMap)
+
+      const now = Date.now()
+      const upcoming = allLessons
+        .filter(l => l.status === 'soon' && new Date(l.scheduled_at).getTime() > now - 3600000)
+        .sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
+        .slice(0, 3)
+      setLessons(upcoming)
     }
     load()
   }, [user])
 
-  // ring: viewBox 180, r=80, circumference ~502
   const circ = 502
   const dashoffset = circ - circ * (readiness / 100)
+
+  const today = new Date()
+  const dayStrip = [-1, 0, 1].map(offset => {
+    const d = new Date(today)
+    d.setDate(today.getDate() + offset)
+    return { label: `${DAY_SHORT[d.getDay()]} ${d.getDate()}`, isToday: offset === 0 }
+  })
+
+  const CARD_COLORS = ['#93A8C7', '#EDE9DC', '#C7B8A8']
 
   return (
     <div className="noscroll" style={{ position: 'absolute', inset: 0, background: '#000', color: '#fff', overflowY: 'auto' }}>
@@ -51,7 +78,8 @@ export function HomePage() {
           <h1 style={{ fontSize: 52, lineHeight: .92, fontWeight: 600, letterSpacing: '-1.6px', margin: 0 }}>Сегодня</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 22 }}>
-          <div style={{ height: 42, padding: '0 16px', borderRadius: 999, background: '#171717', color: '#fff', display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 500 }}>Эта неделя
+          <div style={{ height: 42, padding: '0 16px', borderRadius: 999, background: '#171717', color: '#fff', display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 500 }}>
+            Эта неделя
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M6 9l6 6 6-6"/></svg>
           </div>
           <div style={{ width: 42, height: 42, borderRadius: 999, background: '#fff', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -61,7 +89,7 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* readiness ring */}
+      {/* Readiness ring */}
       <div style={{ padding: '14px 24px 8px', display: 'flex', alignItems: 'center', gap: 20 }}>
         <div style={{ position: 'relative', width: 128, height: 128, flexShrink: 0 }}>
           <svg width="128" height="128" viewBox="0 0 180 180" style={{ transform: 'rotate(-90deg)' }}>
@@ -78,41 +106,55 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* lesson cards */}
-      <div className="noscroll" style={{ display: 'flex', gap: 14, overflowX: 'auto', padding: '18px 24px 8px', scrollSnapType: 'x mandatory' }}>
-        <div style={{ flex: '0 0 210px', height: 230, borderRadius: 22, background: '#93A8C7', color: '#0B0B0B', padding: 22, display: 'flex', flexDirection: 'column', scrollSnapAlign: 'start' }}>
-          <div style={{ fontSize: 13, fontWeight: 600 }}>Игорь Семёнов</div>
-          <div style={{ fontSize: 11, color: 'rgba(11,11,11,.55)', fontFamily: "'Geist Mono',monospace", letterSpacing: .5, marginTop: 3 }}>ИНСТРУКТОР · ВОЖДЕНИЕ</div>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}><div style={{ fontSize: 30, fontWeight: 600, lineHeight: .98, letterSpacing: '-.8px' }}>Город:<br/>левые<br/>повороты</div></div>
-          <div style={{ fontSize: 13, fontWeight: 500, marginTop: 14 }}>10:00 — 11:30</div>
+      {/* Lesson cards from DB */}
+      {lessons.length > 0 ? (
+        <div className="noscroll" style={{ display: 'flex', gap: 14, overflowX: 'auto', padding: '18px 24px 8px', scrollSnapType: 'x mandatory' }}>
+          {lessons.map((l, i) => {
+            const instr = instructors[l.instructor_id]
+            const d = new Date(l.scheduled_at)
+            const typeLabel = l.lesson_type === 'driving' ? 'ИНСТРУКТОР · ВОЖДЕНИЕ' : 'ИНСТРУКТОР · ТЕОРИЯ'
+            return (
+              <div key={l.id} style={{ flex: '0 0 210px', height: 230, borderRadius: 22, background: CARD_COLORS[i % CARD_COLORS.length], color: '#0B0B0B', padding: 22, display: 'flex', flexDirection: 'column', scrollSnapAlign: 'start' }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>{instr?.full_name ?? 'Инструктор'}</div>
+                <div style={{ fontSize: 11, color: 'rgba(11,11,11,.55)', fontFamily: "'Geist Mono',monospace", letterSpacing: .5, marginTop: 3 }}>{typeLabel}</div>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}>
+                  <div style={{ fontSize: 26, fontWeight: 600, lineHeight: 1.05, letterSpacing: '-.6px' }}>
+                    {DAY_SHORT[d.getDay()]}, {d.getDate()} {MONTH_SHORT[d.getMonth()]}<br/>{l.place}
+                  </div>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 500, marginTop: 14 }}>{fmtTime(l.scheduled_at)} — {fmtEnd(l.scheduled_at, l.duration_min)}</div>
+              </div>
+            )
+          })}
         </div>
-        <div style={{ flex: '0 0 210px', height: 230, borderRadius: 22, background: '#EDE9DC', color: '#0B0B0B', padding: 22, display: 'flex', flexDirection: 'column', scrollSnapAlign: 'start' }}>
-          <div style={{ fontSize: 13, fontWeight: 600 }}>Марина Лебедева</div>
-          <div style={{ fontSize: 11, color: 'rgba(11,11,11,.55)', fontFamily: "'Geist Mono',monospace", letterSpacing: .5, marginTop: 3 }}>ИНСТРУКТОР · ПЛОЩАДКА</div>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end' }}><div style={{ fontSize: 30, fontWeight: 600, lineHeight: .98, letterSpacing: '-.8px' }}>Парковка<br/>задним<br/>ходом</div></div>
-          <div style={{ fontSize: 13, fontWeight: 500, marginTop: 14 }}>14:45 — 16:15</div>
+      ) : (
+        <div style={{ margin: '18px 24px 8px', borderRadius: 22, background: '#171717', padding: 22 }}>
+          <div style={{ fontSize: 15, color: 'rgba(255,255,255,.5)' }}>Нет предстоящих занятий</div>
+          <div onClick={e => goToFill('/booking', e)} style={{ marginTop: 10, fontSize: 15, color: '#EDE9DC', cursor: 'pointer', fontWeight: 600 }}>Записаться на вождение →</div>
         </div>
-      </div>
+      )}
 
-      {/* day strip */}
+      {/* Day strip */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, padding: '14px 24px', borderTop: '1px solid rgba(255,255,255,.08)', borderBottom: '1px solid rgba(255,255,255,.08)', margin: '14px 0', color: 'rgba(255,255,255,.55)' }}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M15 18l-6-6 6-6"/></svg>
-        <span style={{ color: '#fff', fontWeight: 600, fontSize: 15 }}>Пн 30</span>
-        <span style={{ fontSize: 15 }}>Вт 1</span>
-        <span style={{ fontSize: 15 }}>Ср 2</span>
+        {dayStrip.map(({ label, isToday }) => (
+          <span key={label} style={{ fontSize: 15, color: isToday ? '#fff' : 'rgba(255,255,255,.55)', fontWeight: isToday ? 600 : 400 }}>{label}</span>
+        ))}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M9 6l6 6-6 6"/></svg>
       </div>
 
-      {/* continue + streak */}
+      {/* Continue + streak */}
       <div style={{ padding: '6px 24px 40px', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div onClick={e => goToFill('/theory', e)} style={{ borderRadius: 22, background: '#171717', padding: 22, cursor: 'pointer' }}>
           <div style={{ fontFamily: "'Geist Mono',monospace", fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', color: 'rgba(255,255,255,.5)' }}>Продолжить</div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14 }}>
-            <div style={{ fontSize: 21, fontWeight: 600, letterSpacing: '-.4px' }}>Дорожные знаки</div>
+            <div style={{ fontSize: 21, fontWeight: 600, letterSpacing: '-.4px' }}>Теория ПДД</div>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
           </div>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,.55)', marginTop: 4 }}>Урок 4 из 9 · теория</div>
-          <div style={{ height: 5, borderRadius: 999, background: 'rgba(255,255,255,.14)', marginTop: 16, overflow: 'hidden' }}><div style={{ height: '100%', width: '44%', background: '#EDE9DC', borderRadius: 999 }}/></div>
+          <div style={{ fontSize: 13, color: 'rgba(255,255,255,.55)', marginTop: 4 }}>{remainingModules} модулей осталось</div>
+          <div style={{ height: 5, borderRadius: 999, background: 'rgba(255,255,255,.14)', marginTop: 16, overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: `${readiness}%`, background: '#EDE9DC', borderRadius: 999, transition: 'width 1s' }}/>
+          </div>
         </div>
         <div style={{ borderRadius: 22, background: '#171717', padding: '20px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>

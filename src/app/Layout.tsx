@@ -99,27 +99,6 @@ export function Layout() {
         fontFamily: "'Geist', sans-serif",
       }}
     >
-      {/* Status bar */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: 50,
-        zIndex: 60, display: 'flex', alignItems: 'flex-end',
-        justifyContent: 'space-between', padding: '0 28px 8px',
-        pointerEvents: 'none', color: theme.fg, fontWeight: 600,
-        fontSize: 15, letterSpacing: '.2px',
-      }}>
-        <span>9:41</span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="7" rx="1"/><rect x="10" y="1.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="11" rx="1" opacity=".35"/></svg>
-          <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.4c2 0 3.8.8 5.1 2l1.3-1.4A9.4 9.4 0 0 0 8.5.4 9.4 9.4 0 0 0 2 3l1.4 1.4A7.4 7.4 0 0 1 8.5 2.4Z"/><path d="M8.5 6c1 0 1.9.4 2.6 1l1.3-1.4A6 6 0 0 0 8.5 4 6 6 0 0 0 4.6 5.6L6 7a3.7 3.7 0 0 1 2.5-1Z"/><circle cx="8.5" cy="9.6" r="1.8"/></svg>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 2 }}>
-            <span style={{ width: 22, height: 11, border: '1.4px solid currentColor', borderRadius: 3, display: 'inline-block', position: 'relative' }}>
-              <span style={{ position: 'absolute', inset: '1.5px', width: 14, background: 'currentColor', borderRadius: 1 }}/>
-            </span>
-            <span style={{ width: 1.6, height: 4, background: 'currentColor', borderRadius: 1 }}/>
-          </span>
-        </span>
-      </div>
-
       {/* Page content */}
       <div
         className="noscroll"
